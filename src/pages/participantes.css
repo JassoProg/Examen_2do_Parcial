@@ -1,0 +1,23 @@
+.participants-page { padding: 18px }
+
+.search-form { margin-bottom: 16px; display:flex; gap:8px }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px }
+
+.card { background: var(--surface); padding: 14px; border-radius: 14px; display: flex; gap: 14px; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.03); transition: transform .18s ease, box-shadow .18s ease }
+.card:hover { transform: translateY(-6px); box-shadow: 0 22px 48px rgba(0,0,0,0.7) }
+
+.avatar { width: 72px; height: 72px; object-fit: cover; border-radius: 50%; box-shadow: 0 8px 26px rgba(107,16,38,0.12); border: 3px solid rgba(107,16,38,0.06) }
+
+.card-body h5, .card-body h3 { margin: 0 }
+.ocupacion { color: var(--muted) }
+.list-logo { height: 46px; width: auto }
+
+.placeholder { color: rgba(255,255,255,0.36); font-style: italic }
+
+/* Make search input match form controls */
+.search-form .form-control { padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.04); background: var(--surface); color: var(--text) }
+
+@media (max-width: 640px) {
+  .avatar { width: 64px; height: 64px }
+}
