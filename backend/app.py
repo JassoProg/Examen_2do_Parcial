@@ -67,15 +67,48 @@ class ParticipantIn(BaseModel):
 
 
 def seed_db():
+    """
+    Inicializa la base de datos y genera participantes iniciales.
+
+    Modos de operación (vía variables de entorno):
+    - SEED_MODE=replace → elimina todos los registros y agrega 3 nuevos participantes ficticios.
+    - (por defecto) si la tabla está vacía, agrega 3 participantes ficticios.
+    """
     Base.metadata.create_all(bind=engine)
     db = SessionLocal()
     try:
-        count = db.query(Participant).count()
-        if count == 0:
-            p1 = Participant(Nombre='Carlos', Apellidos='Perez', Email='carlos.perez@example.com', Twitter='carlosp', Ocupacion='Estudiante', Avatar='https://i.pravatar.cc/150?img=3', Acepto=True)
-            p2 = Participant(Nombre='Ana', Apellidos='Lopez', Email='ana.lopez@example.com', Twitter='analo', Ocupacion='Docente', Avatar='https://i.pravatar.cc/150?img=5', Acepto=True)
-            db.add_all([p1, p2])
+        seed_mode = os.environ.get('SEED_MODE', '').strip().lower()
+
+        def new_people():
+            return [
+                Participant(
+                    Nombre='María Fernanda', Apellidos='Ruiz', Email='maria.ruiz@example.com',
+                    Twitter='mferuiz', Ocupacion='Ingeniera de datos',
+                    Avatar='https://i.pravatar.cc/150?img=11', Acepto=True
+                ),
+                Participant(
+                    Nombre='Diego', Apellidos='Santillán', Email='diego.santillan@example.com',
+                    Twitter='dsantillan', Ocupacion='Desarrollador móvil',
+                    Avatar='https://i.pravatar.cc/150?img=27', Acepto=True
+                ),
+                Participant(
+                    Nombre='Ximena', Apellidos='Valdés', Email='ximena.valdes@example.com',
+                    Twitter='xvaldes', Ocupacion='Diseñadora UX',
+                    Avatar='https://i.pravatar.cc/150?img=34', Acepto=True
+                ),
+            ]
+
+        if seed_mode == 'replace':
+            # Eliminar todo y resembrar con 3 participantes nuevos
+            db.query(Participant).delete()
+            db.add_all(new_people())
             db.commit()
+        else:
+            # Solo sembrar si está vacío
+            count = db.query(Participant).count()
+            if count == 0:
+                db.add_all(new_people())
+                db.commit()
     finally:
         db.close()
 
